@@ -7,13 +7,13 @@
         </div>
         <div class="flex-[90%]  overflow-y-auto p-4">
             {{-- if any unexpected error --}}
-            <x-input-error :messages="$errors->get('message')" class="mt-2" />
+            <x-input-error :messages="$errors->get('error')" class="mt-2" />
             {{-- sections --}}
             <form action={{route('admin.product.store')}} enctype="multipart/form-data" method="POST">
                 @csrf
                 <section class="">
-                        @include('components.Products.info-add')
-                        @include('components.Products.second-add')
+                        @include('components.Products.add.info-add')
+                        @include('components.Products.add.second-add')
                         @include('components.Products.img-add')
                 </section>
                 <div class="mx-4 flex justify-end">

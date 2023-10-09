@@ -1,5 +1,6 @@
 <section class="flex p-4 rounded-md flex-wrap gap-3 ">
         <div class="flex-[48%] px-3 mb-6 md:mb-0 bg-white p-4 rounded-lg shadow-sm shadow-gray-500">
+            <small class="test-xs text-green-300">If You add photos will add to last photos</small>
             <div class="p-4 border border-gray-300 rounded-md">
                 <main class="container ">
                     <!-- file upload modal -->

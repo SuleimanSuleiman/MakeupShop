@@ -56,6 +56,30 @@
                 </div>
             </div>
            <div class=" w-full mt-4 bg-white rounded-lg shadow-md stroke-gray-600">
+            {{-- error --}}
+           @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="block sm:inline">{{$error}}</li>
+                        @endforeach
+                    </ul>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                    </span>
+                </div>
+           @endif
+            {{-- success --}}
+            @if(session('success'))
+                <div id="success-message" class="bg-indigo-900 text-center py-4 lg:px-4">
+                    <div class="p-2 bg-indigo-800 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+                        <span class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3">Success</span>
+                        <span class="font-semibold mr-2 text-left flex-auto">{{ session('success') }}</span>
+                        <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
+                    </div>
+                </div>
+            @endif
             <form  action="" class="">
                <div class="p-4 border-b border-gray-300">
                     <p class="text-lg text-gray-500 mb-4">Filter</p>
@@ -144,7 +168,6 @@
                             </th>
                             {{-- action --}}
                             <th scope="col" class="px-6 py-3">
-                                <span class="sr-only" class="text-gray-600">...</span>
                             </th>
                         </tr>
                     </thead>
@@ -160,49 +183,47 @@
                                     </div>
                                     <div class="flex-[90%]">
                                         <p class="text-sm text-gray-600 font-semibold">{{$pagin->name}}</p>
-                                        <p class="text-xs text-gray-600 opacity-75 font-semibold">Air Jordan is a line of basketball shoes produced by Nike</p>
+                                        <p class="text-xs text-gray-600 opacity-75 font-semibold">{{substr($pagin->desc,0,50)}} ...</p>
                                     </div>
                                 </td>
                                 {{-- category  --}}
                                 <td class="px-6 py-4">
-                                    category
+                                    <a class="underline" href={{route('admin.sub-category.show',$pagin->categoryName->id)}}>{{$pagin->categoryName->title}}</a>
                                 </td>
                                 {{-- main scategory --}}
                                 <td class="px-6 py-4">
-                                    main category
+                                    <a class="underline" href={{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}>{{$pagin->categoryName->BelongTOMainCategory->title}}</a>
                                 </td>
                                 {{-- price --}}
                                 <td class="px-6 py-4">
-                                    $2999
+                                    {{$pagin->price}}
                                 </td>
                                 {{-- margiet --}}
                                 <td class="px-6 py-4">
-                                    market
+                                    {{$pagin->market}}
                                 </td>
                                 {{-- actiob --}}
                                 <td class="px-6 py-4 text-right">
-                                        <div  data-index={{$pagin->id}} id="action" class=" flex-[5%] relative font-[100] text-[28px] flex justify-center items-center hover:cursor-pointer">
-                                            <svg id="icon-products" class="w-[6px] fill-gray-700 transition-all duration-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                                            </svg>
-                                            <ul id="menu-product" class="hidden absolute -left-16 bg-gray-300 p-1 rounded-md ">
-                                                <li data-index={{$pagin->id}} data-title={{$pagin->name}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
-                                                <li data-index={{$pagin->id}} data-title={{$pagin->name}} id="update" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-orange-700">
-                                                    <a href={{ route('admin.main-category.edit', ['main_category'=>$pagin->id]) }}>Update</a>
+                                        <div  data-index={{$pagin->id}} id="action" class=" flex-[5%]  font-[100] text-[28px] flex justify-center items-center hover:cursor-pointer">
+                                            <ul id="menu-product" class=" bg-gray-200 p-1 rounded-md ">
+                                                <li data-index={{$pagin->id}} data-name={{$pagin->name}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
+                                                <li data-index={{$pagin->id}} data-name={{$pagin->name}} id="update" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-orange-700">
+                                                    <a href={{ route('admin.product.edit', ['product'=>$pagin->id]) }}>Update</a>
                                                 </li>
                                             </ul>
                                             {{-- create Container For Delete --}}
-                                            <div id="deleteContainer" class="hidden w-full h-full fixed top-0 left-0 justify-center items-center z-50 backdrop-blur-md bg-[rgba(255, 255, 255, 0.2)] " >
-                                                <div id="PdeleteContainer" class="w-[400px] h-[300px] bg-gray-300 rounded-md p-[12px] ">
+                                            <div id="deleteContainer" class="hidden w-full h-full pointer-event fixed top-0 left-0 justify-center items-center z-50 backdrop-blur-md bg-[rgba(255, 255, 255, 0.2)] " >
+                                                <button id="removeContainerbtn" class="absolute text-gray-900  top-12 right-12">X</button>
+                                                <div id="PdeleteContainer" class="w-[400px] bg-gray-300 rounded-md p-[12px] ">
                                                     <h1 class="text-[23px] text-red-600 font-semibold mt-4">Are your sure to remove</h1>
-                                                    <p class="opacity-90 text-black font-medium mt-4">If you delete this category will removed any products in this category</p>
-                                                <p class="text-[20px] text-red-600 font-semibold mt-4 leading-4 select-none">Write "<small style="color:black">{{explode(' ',$pagin->name)[0]}}</small>"</p>
-                                                    <form id="deleteForm" action={{ route('admin.sub-category.destroy', ['sub_category'=> $pagin->id]) }} method="POST"  class="flex justify-between items-center mt-4">
+                                                    <p class="opacity-90 text-black font-medium mt-4 text-base">If you delete this product you can restore during 30 day</p>
+                                                    <p class="text-[20px] text-red-600 font-semibold mt-4 leading-4 select-none">Write "<small style="color:black">{{explode(' ',$pagin->name)[0]}}</small>"</p>
+                                                    <form id="deleteForm" action={{ route('admin.product.destroy', ['product'=> $pagin->id]) }} method="POST"  class="flex justify-between items-center mt-4">
                                                     @csrf
                                                     @method('DELETE')
                                                         <input type="text" id="inputFaild" class="flex-[80%] border-none rounded-md h-[25px] mt-2 mr-4" />
                                                         <button disabled type="submit" class="flex-[20%] text-red-600 text-[18px] mt-2 bg-white px-2 py-[1px] rounded-md opacity-40" >Delete</button>
-                                                </form>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

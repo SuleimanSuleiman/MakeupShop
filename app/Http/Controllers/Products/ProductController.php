@@ -4,30 +4,31 @@ namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProduct;
+use App\Http\Requests\UpdateProduct;
 use App\Models\Category;
 use App\Models\MainCategory;
 use App\Models\Product;
 use App\Models\Upload;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        try {
+            $perPage = $request->input('perPage', 5);
 
-        $categories = Category::all();
-        $main_categories = MainCategory::all();
+            $categories = Category::all();
+            $main_categories = MainCategory::all();
 
-        $perPage = $request->input('perPage', 5);
-        $pagination = Product::Paginate($perPage);
+            $pagination = Product::with('categoryName.BelongTOMainCategory')->Paginate($perPage);
 
-        return view('Admin.Products.show-products', [
-            'categories' => $categories,
-            'main_categories' => $main_categories,
-            'pagination' => $pagination,
-        ]);
+            return view('Admin.Products.show-products', compact('categories', 'main_categories', 'pagination'));
+        } catch (Exception $error) {
+            return redirect()->back()->withErrors(['error' => $error->getMessage()]);
+        }
     }
 
     /**
@@ -36,6 +37,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('Admin.Products.Add', compact('categories'));
     }
 
@@ -51,7 +53,7 @@ class ProductController extends Controller
 
             return redirect()->route('admin.product.index');
         } catch (Exception $error) {
-            return redirect()->back()->withErrors(['message' => $error->getMessage()]);
+            return redirect()->back()->withErrors(['error' => $error->getMessage()]);
         }
     }
 
@@ -101,7 +103,7 @@ class ProductController extends Controller
             $newImg->product_id = $newProduct->id;
             $newImg->save();
         }
-        return redirect()->route('admin.product.index');
+        return redirect()->route('admin.product.index')->with('success', 'Create new product successfully');
     }
     public function SearchHandle(Request $request)
     {
@@ -109,7 +111,7 @@ class ProductController extends Controller
             $paginator = Product::search($request->value)->get();
             return $paginator;
         } catch (Exception $error) {
-            return redirect()->back()->withErrors(['message' => $error->getMessage()]);
+            return redirect()->back()->withErrors(['error' => $error->getMessage()]);
         }
     }
 
@@ -123,22 +125,70 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+
+            $product = Product::findOrFail($id);
+            $categories = Category::all();
+
+            return view('Admin.Products.edit-product', [
+                'product' => $product,
+                'categories' => $categories,
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return redirect()->back()->withErrors(['error', 'Not Found This prodcut']);
+        } catch (Exception $error) {
+            return redirect()->back()->withErrors(['error' => $error->getMessage()]);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProduct $request, string $id)
     {
-        //
-    }
+        try {
 
+            $product = Product::findOrFail($id);
+
+            $product->update([
+                'name' => ['en' => trim($request->get('name')), 'ar' => 'غير معروف'],
+                'desc' => ['en' => trim($request->get('desc')), 'ar' => 'غير معروف'],
+                'Quantity' => trim($request->get('Quantity')),
+                'price' => trim($request->get('price')),
+                'category_id' => trim($request->get('category_id')),
+                'market' => trim($request->get('market')),
+                'Color' => implode(',', $request->get('color')),
+                'Concerns' => implode(',', $request->get('Concerns')),
+                'Finish' => implode(',', $request->get('Finish')),
+                'Formulation' => implode(',', $request->get('Formulation')),
+                'Skin' => implode(',', $request->get('Skin')),
+                'Size' => implode(',', $request->get('Size')),
+            ]);
+
+
+            $product->save();
+
+            return redirect()->route('admin.product.index')->with('success', 'update the product successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->withErrors(['error', 'Not Found This prodcut']);
+        } catch (Exception $error) {
+            return redirect()->back()->withErrors(['error' => $error->getMessage()]);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+
+            return redirect()->route('admin.product.index')->with('success', 'the product deleted successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.product.index')->withErrors(['error', 'Not Found This product']);
+        } catch (Exception $e) {
+            return redirect()->route('admin.product.index')->withErrors(['error', $e->getMessage()]);
+        }
     }
 }
