@@ -18,15 +18,11 @@ return new class extends Migration
             $table->decimal('price');
             $table->longText('desc');
             $table->string('market');
-            $table->string('target');
             $table->string('Color');
             $table->string('Concerns');
             $table->string('Finish');
             $table->string('Formulation');
-            $table->string('Benefits');
             $table->string('Skin');
-            $table->string('Type');
-            $table->longText('Ingredient');
             $table->string('Size');
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')

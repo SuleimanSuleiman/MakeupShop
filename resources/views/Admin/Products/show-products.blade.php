@@ -3,8 +3,9 @@
         {{-- sidbare --}}
         <x-sidbare stage="Show  Products" btn="false"/>
         {{-- setting --}}
-        <section class="flex-[90%] p-8">
+        <section class="flex-[90%] px-8 py-3">
             {{-- header --}}
+            <x-header-dashboard />
             <div class="p-4 w-full  shadow-md stroke-gray-600 flex items-center justify-between flex-wrap bg-white rounded-lg">
                 <div class="px-4  flex-auto flex justify-between relative after:bg-gray-200 after:w-0.5 after:h-full after:absolute after:top-0 after:right-0">
                     <div class="">
@@ -84,7 +85,6 @@
                <div class="p-4 border-b border-gray-300">
                     <p class="text-lg text-gray-500 mb-4">Filter</p>
                     <div  class="flex justify-between items-center gap-x-8">
-                        <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" placeholder="desc ..." name="desc" />
                         <select name="category" id="" class="tex-sm text-gray-500 flex-auto border-gray-200 rounded-md focus:outline-none py-1 px-2">
                             <option selected>Select Category</option>
                             @foreach ($categories as $category)
@@ -100,8 +100,9 @@
                     </div>
                 </div>
                 <div class="p-4 w-full border-b border-gray-300 flex justify-between items-center">
-                    <div class="flex-[20%] ">
+                    <div class="flex-[20%] flex gap-x-1">
                         <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" placeholder="Name ..." name="Name" />
+                        <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" placeholder="desc ..." name="desc" />
                     </div>
                     <div class="flex-[80%] flex justify-end items-center">
                         <button class="flex mr-4  justify-center items-center bg-gray-200 text-gray-400 px-4 py-1.5 rounded-lg">
@@ -172,73 +173,246 @@
                         </tr>
                     </thead>
                     {{-- body --}}
-                    <tbody >
-                        @foreach ($pagination as $pagin)
-                            <tr class="bg-white border-y border-gray-300 overflow-x-auto">
-                                <td class="px-6 py-4 "><svg class="fill-blue-400 cursor-pointer " xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg></td>
-                                <td class="px-6 py-4"><input  class="checkbox hover:cursor-pointer" type="checkbox"></td>
-                                <td class="px-6 py-4 flex items-center">
-                                    <div class="flex-[10%] mr-2">
-                                        <img src="/uploads/16/pexels-ilya-gogo-15569150.jpg"  class="w-10 h-10 object-fill rounded-md" alt="">
-                                    </div>
-                                    <div class="flex-[90%]">
-                                        <p class="text-sm text-gray-600 font-semibold">{{$pagin->name}}</p>
-                                        <p class="text-xs text-gray-600 opacity-75 font-semibold">{{substr($pagin->desc,0,50)}} ...</p>
-                                    </div>
-                                </td>
-                                {{-- category  --}}
-                                <td class="px-6 py-4">
-                                    <a class="underline" href={{route('admin.sub-category.show',$pagin->categoryName->id)}}>{{$pagin->categoryName->title}}</a>
-                                </td>
-                                {{-- main scategory --}}
-                                <td class="px-6 py-4">
-                                    <a class="underline" href={{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}>{{$pagin->categoryName->BelongTOMainCategory->title}}</a>
-                                </td>
-                                {{-- price --}}
-                                <td class="px-6 py-4">
-                                    {{$pagin->price}}
-                                </td>
-                                {{-- margiet --}}
-                                <td class="px-6 py-4">
-                                    {{$pagin->market}}
-                                </td>
-                                {{-- actiob --}}
-                                <td class="px-6 py-4 text-right">
-                                        <div  data-index={{$pagin->id}} id="action" class=" flex-[5%]  font-[100] text-[28px] flex justify-center items-center hover:cursor-pointer">
-                                            <ul id="menu-product" class=" bg-gray-200 p-1 rounded-md ">
-                                                <li data-index={{$pagin->id}} data-name={{$pagin->name}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
-                                                <li data-index={{$pagin->id}} data-name={{$pagin->name}} id="update" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-orange-700">
-                                                    <a href={{ route('admin.product.edit', ['product'=>$pagin->id]) }}>Update</a>
-                                                </li>
-                                            </ul>
-                                            {{-- create Container For Delete --}}
-                                            <div id="deleteContainer" class="hidden w-full h-full pointer-event fixed top-0 left-0 justify-center items-center z-50 backdrop-blur-md bg-[rgba(255, 255, 255, 0.2)] " >
-                                                <button id="removeContainerbtn" class="absolute text-gray-900  top-12 right-12">X</button>
-                                                <div id="PdeleteContainer" class="w-[400px] bg-gray-300 rounded-md p-[12px] ">
-                                                    <h1 class="text-[23px] text-red-600 font-semibold mt-4">Are your sure to remove</h1>
-                                                    <p class="opacity-90 text-black font-medium mt-4 text-base">If you delete this product you can restore during 30 day</p>
-                                                    <p class="text-[20px] text-red-600 font-semibold mt-4 leading-4 select-none">Write "<small style="color:black">{{explode(' ',$pagin->name)[0]}}</small>"</p>
-                                                    <form id="deleteForm" action={{ route('admin.product.destroy', ['product'=> $pagin->id]) }} method="POST"  class="flex justify-between items-center mt-4">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                        <input type="text" id="inputFaild" class="flex-[80%] border-none rounded-md h-[25px] mt-2 mr-4" />
-                                                        <button disabled type="submit" class="flex-[20%] text-red-600 text-[18px] mt-2 bg-white px-2 py-[1px] rounded-md opacity-40" >Delete</button>
-                                                    </form>
+                    <tbody class="">
+                            @foreach($pagination as $pagin)
+                                <tr class="bg-white border-y border-gray-300 overflow-x-auto ">
+                                    <td data-index="{{$pagin->id}}" id="ProductDataShow{{$pagin->id}}" class="px-6 py-4 hover:cursor-pointer">
+                                        <svg class="fill-blue-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
+                                    </td>
+                                    <td class="px-6 py-4"><input  class="checkbox hover:cursor-pointer" type="checkbox"></td>
+                                    <td class="px-6 py-4 flex items-center">
+                                        <div class="flex-[10%] mr-2">
+                                            <img src="/{{$pagin->imgs[0]->path}}" class="w-10 h-10 object-fill rounded-md" alt="">
+                                        </div>
+                                        <div class="flex-[90%]">
+                                            <p class="text-sm text-gray-600 font-semibold">{{$pagin->name}}</p>
+                                            <p class="text-xs text-gray-600 opacity-75 font-semibold">{{substr($pagin->desc,0,50)}} ...</p>
+                                        </div>
+                                    </td>
+                                    {{-- category  --}}
+                                    <td class="px-6 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->active?'after:bg-green-800':'after:bg-red-600'}}">
+                                        <a class="underline" href={{route('admin.sub-category.show',$pagin->categoryName->id)}}>{{$pagin->categoryName->title}}</a>
+                                    </td>
+                                    {{-- main scategory --}}
+                                    <td class="px-6 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->BelongTOMainCategory->active?'after:bg-green-800':'after:bg-red-600'}}"">
+                                        <a class="underline" href={{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}>{{$pagin->categoryName->BelongTOMainCategory->title}}</a>
+                                    </td>
+                                    {{-- price --}}
+                                    <td class="px-6 py-4">
+                                        {{$pagin->price}}
+                                    </td>
+                                    {{-- margiet --}}
+                                    <td class="px-6 py-4">
+                                        {{$pagin->market}}
+                                    </td>
+                                    {{-- actiob --}}
+                                    <td class="px-6 py-4 text-right">
+                                            <div  data-index={{$pagin->id}} id="action" class=" flex-[5%]  font-[100] text-[28px] flex justify-center items-center hover:cursor-pointer">
+                                                <ul id="menu-product" class=" bg-gray-200 p-1 rounded-md ">
+                                                    <li data-index={{$pagin->id}} data-name={{$pagin->name}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
+                                                    <li data-index={{$pagin->id}} data-name={{$pagin->name}} id="update" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-orange-700">
+                                                        <a href={{ route('admin.product.edit', ['product'=>$pagin->id]) }}>Update</a>
+                                                    </li>
+                                                </ul>
+                                                {{-- create Container For Delete --}}
+                                                <div id="deleteContainer" class="hidden w-full h-full pointer-event fixed top-0 left-0 justify-center items-center z-50 backdrop-blur-md bg-[rgba(255, 255, 255, 0.2)] " >
+                                                    <button id="removeContainerbtn" class="absolute text-gray-900  top-12 right-12">X</button>
+                                                    <div id="PdeleteContainer" class="w-[400px] bg-gray-300 rounded-md p-[12px] ">
+                                                        <h1 class="text-[23px] text-red-600 font-semibold mt-4">Are your sure to remove</h1>
+                                                        <p class="opacity-90 text-black font-medium mt-4 text-base">If you delete this product you can restore during 30 day</p>
+                                                        <p class="text-[20px] text-red-600 font-semibold mt-4 leading-4 select-none">Write "<small style="color:black">{{explode(' ',$pagin->name)[0]}}</small>"</p>
+                                                        <form id="deleteForm" action={{ route('admin.product.destroy', ['product'=> $pagin->id]) }} method="POST"  class="flex justify-between items-center mt-4">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                            <input type="text" id="inputFaild" class="flex-[80%] border-none rounded-md h-[25px] mt-2 mr-4" />
+                                                            <button disabled type="submit" class="flex-[20%] text-red-600 text-[18px] mt-2 bg-white px-2 py-[1px] rounded-md opacity-40" >Delete</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
+                                    </td>
+                                </tr>
+                                <div id="productData{{$pagin->id}}" class="hidden">
+                                    <div id="ProductData{{$pagin->id}}Container" class="flex fixed w-screen h-screen top-0 left-0  justify-center items-center z-50 backdrop-blur-md bg-[rgba(255, 255, 255, 0.8)] z-50">
+                                        <p id="ProductDataBtn" onclick="hideProductData({{$pagin->id}});" class="w-12 h-12 absolute top-12 right-12 text-3xl bg-gray-500 text-white rounded-full p-4 flex justify-center items-center hover:cursor-pointer">X</p>
+                                        <div id="ProductContainer{{$pagin->id}}" class="bg-gray-100 w-[50%] shadow-lg shadow-gray-400">
+                                            {{-- name --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <p class="flex-[40%">product:</p>
+                                                    <div class="flex-[60%] flex">
+                                                        <div class="mr-2">
+                                                            <img id="product-img{{$pagin->id}}" src="" class="w-10 h-10 object-fill rounded-md" alt="">
+                                                        </div>
+                                                        <div class="">
+                                                            <p id="product-name{{$pagin->id}}" class="text-sm text-gray-600 font-semibold"></p>
+                                                            <p id="product-desc{{$pagin->id}}" class="text-xs text-gray-600 opacity-75 font-semibold"></p>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            {{-- main category --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Main Cateogry: </P>
+                                                    <a id="main-category-link{{$pagin->id}}" class="flex-[60%] underline" href=""></a>
+                                            </div>
+                                            {{-- sub category --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Sub Category:</P>
+                                                    <a id="sub-category-link{{$pagin->id}}" class="flex-[60%] underline" href=""></a>
+                                            </div>
+                                            {{-- PRICE --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Price:</p>
+                                                    <p id="product-price{{$pagin->id}}" class="flex-[60%]"></p>
+                                            </div>
+                                            {{-- MARKET --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Market:</p>
+                                                    <p id="product-market{{$pagin->id}}" class="flex-[60%]"></p>
+                                            </div>
+                                            {{-- Color --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Colors:</p>
+                                                    <div id="product-colors{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
+                                            {{-- Concerns --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Concerns:</p>
+                                                    <div id="product-concerns{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
+                                            {{-- Finish --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Finish:</p>
+                                                    <div id="product-finish{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
+                                            {{-- Formulation --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Formulation:</p>
+                                                    <div id="product-formulation{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
+                                            {{-- Skin --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Skin:</p>
+                                                    <div id="product-skin{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
+                                            {{-- Size --}}
+                                            <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
+                                                    <P class="flex-[40%">Size:</p>
+                                                    <div id="product-size{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
+                                                    </div>
+                                            </div>
                                         </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                            <script>
+                                function hideProductData(id){
+                                    const productDataElement = document.getElementById(`productData${id}`);
+                                    if (productDataElement) {
+                                        productDataElement.classList.add("hidden");
+                                    }
+                                }
+
+                            </script>
+                            @foreach($pagination as $pagin)
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                    let showProductDataBtn = document.getElementById(`ProductDataShow{{$pagin->id}}`);
+                                    showProductDataBtn.addEventListener("click", function () {
+                                        let dataId = showProductDataBtn.getAttribute("data-index");
+                                        let productDataElement = document.getElementById(`productData${dataId}`);
+                                        if (productDataElement) {
+                                            productDataElement.classList.remove("hidden");
+
+                                            // تعبئة البيانات المنتج هنا
+                                            document.getElementById("product-img{{$pagin->id}}").src = "/{{$pagin->imgs[0]->path}}";
+                                            document.getElementById("product-name{{$pagin->id}}").textContent = `{{$pagin->name}}`;
+                                            console.log( document.getElementById("product-name{{$pagin->id}}"));
+                                            document.getElementById("product-desc{{$pagin->id}}").innerHTML = `{{$pagin->desc}}`;
+                                            document.getElementById("main-category-link{{$pagin->id}}").href = "{{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}";
+                                            document.getElementById("main-category-link{{$pagin->id}}").textContent = "{{$pagin->categoryName->BelongTOMainCategory->title}}";
+                                            document.getElementById("sub-category-link{{$pagin->id}}").href = "{{route('admin.sub-category.show',$pagin->categoryName->id)}}";
+                                            document.getElementById("sub-category-link{{$pagin->id}}").textContent ="{{$pagin->categoryName->title}}";
+                                            document.getElementById("product-price{{$pagin->id}}").textContent = "{{$pagin->price}}";
+                                            document.getElementById("product-market{{$pagin->id}}").textContent = "{{$pagin->market}}";
+
+                                            // معالجة الألوان
+                                            const colors = @json(explode(',', $pagin->Color));
+                                            const colorContainer = document.getElementById("product-colors{{$pagin->id}}");
+                                            colorContainer.innerHTML = "";
+                                            colors.forEach(color => {
+                                                const colorElement = document.createElement("p");
+                                                colorElement.textContent = color;
+                                                colorContainer.appendChild(colorElement);
+                                            });
+
+                                            // معالجة المخاوف
+                                            const concerns = @json(explode(',', $pagin->Concerns));
+                                            const concernsContainer = document.getElementById("product-concerns{{$pagin->id}}");
+                                            concernsContainer.innerHTML = "";
+                                            concerns.forEach(concern => {
+                                                const concernElement = document.createElement("p");
+                                                concernElement.textContent = concern;
+                                                concernsContainer.appendChild(concernElement);
+                                            });
+
+                                            // معالجة الانتهاء
+                                            const finishes = @json(explode(',', $pagin->Finish));
+                                            const finishesContainer = document.getElementById("product-finish{{$pagin->id}}");
+                                            finishesContainer.innerHTML = "";
+                                            finishes.forEach(finish => {
+                                                const finishElement = document.createElement("p");
+                                                finishElement.textContent = finish;
+                                                finishesContainer.appendChild(finishElement);
+                                            });
+
+                                            // معالجة التركيب
+                                            const formulations = @json(explode(',', $pagin->Formulation));
+                                            const formulationsContainer = document.getElementById("product-formulation{{$pagin->id}}");
+                                            formulationsContainer.innerHTML = "";
+                                            formulations.forEach(formulation => {
+                                                const formulationElement = document.createElement("p");
+                                                formulationElement.textContent = formulation;
+                                                formulationsContainer.appendChild(formulationElement);
+                                            });
+
+                                            // معالجة البشرة
+                                            const skins = @json(explode(',', $pagin->Skin));
+                                            const skinsContainer = document.getElementById("product-skin{{$pagin->id}}");
+                                            skinsContainer.innerHTML = "";
+                                            skins.forEach(skin => {
+                                                const skinElement = document.createElement("p");
+                                                skinElement.textContent = skin;
+                                                skinsContainer.appendChild(skinElement);
+                                            });
+
+                                            // معالجة الحجم
+                                            const sizes = @json(explode(',', $pagin->Size));
+                                            const sizesContainer = document.getElementById("product-size{{$pagin->id}}");
+                                            sizesContainer.innerHTML = "";
+                                            sizes.forEach(size => {
+                                                const sizeElement = document.createElement("p");
+                                                sizeElement.textContent = size;
+                                                sizesContainer.appendChild(sizeElement);
+                                            });
+                                        }
+                                    })
+                                    });
+                                </script>
+                            @endforeach
                     </tbody>
                 </table>
-                <div class="px-6 py-3 mb-4 flex justify-between items-center">
-                    <form method="get" class="" action="{{ route('admin.product.index') }}">
-                        <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" type="number" name="perPage" id="perPage" value="{{ request('perPage', $pagination->perPage()) }}">
-                        <button class="bg-blue-500 p-1 rounded-md text-white" type="submit">edit</button>
-                    </form>
-                    {{ $pagination->onEachSide(2)->links() }}
-                </div>
+                    <div class="px-6 py-3 mb-4 flex justify-between items-center">
+                        <form method="get" class="" action="{{ route('admin.product.index') }}">
+                            <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" type="number" name="perPage" id="perPage" value="{{ request('perPage', $pagination->perPage()) }}">
+                            <button class="bg-blue-500 p-1 rounded-md text-white" type="submit">edit</button>
+                        </form>
+                        {{ $pagination->onEachSide(2)->links() }}
+                    </div>
             </div>
            </div>
         </section>

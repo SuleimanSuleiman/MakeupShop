@@ -23,7 +23,7 @@ class ProductController extends Controller
             $categories = Category::all();
             $main_categories = MainCategory::all();
 
-            $pagination = Product::with('categoryName.BelongTOMainCategory')->Paginate($perPage);
+            $pagination = Product::with(['categoryName.BelongTOMainCategory', 'imgs'])->Paginate($perPage);
 
             return view('Admin.Products.show-products', compact('categories', 'main_categories', 'pagination'));
         } catch (Exception $error) {
@@ -68,7 +68,7 @@ class ProductController extends Controller
             'price' => trim($request->get('price')),
             'category_id' => trim($request->get('category_id')),
             'market' => trim($request->get('market')),
-            'Color' => implode(',', $request->get('color')),
+            'Color' => implode(',', $request->get('Color')),
             'Concerns' => implode(',', $request->get('Concerns')),
             'Finish' => implode(',', $request->get('Finish')),
             'Formulation' => implode(',', $request->get('Formulation')),
@@ -97,7 +97,7 @@ class ProductController extends Controller
             }
         }
 
-        foreach ($files as $key => $file) {
+        foreach ($request->file('files') as $key => $file) {
             $newImg = new Upload();
             $newImg->path = 'uploads/' . $newProduct->id . '/' . $file->getClientOriginalName();
             $newImg->product_id = $newProduct->id;
@@ -113,11 +113,6 @@ class ProductController extends Controller
         } catch (Exception $error) {
             return redirect()->back()->withErrors(['error' => $error->getMessage()]);
         }
-    }
-
-    public function show(string $id)
-    {
-        //
     }
 
     /**

@@ -30,7 +30,7 @@ class CreateProduct extends FormRequest
             'statusSale' => 'required',
             'files' => 'required',
             'files.*' => 'required|mimes:png,jpg',
-            'color' => 'required|array',
+            'Color' => 'required|array',
             'Concerns' => 'required|array',
             'Finish' => 'required|array',
             'Formulation' => 'required|array',

@@ -28,7 +28,7 @@
                         <label for={{$Concerns}}>{{$Concerns}}</label>
                         <input  type="checkbox" name="Concerns[]" id="{{$Concerns}}" value="{{$Concerns}}">
                     </fieldset>
-                    @endforeach
+                @endforeach
                     <x-input-error :messages="$errors->get('Concerns')" class="mt-2" />
             </div>
             {{-- Finish --}}
@@ -41,7 +41,7 @@
             @foreach ($FinishsArray as $Finish)
                 <fieldset >
                     <label for={{$Finish}}>{{$Finish}}</label>
-                    <input  type="checkbox" name="Finish[]" id="{{$Finish}}">
+                    <input  type="checkbox" name="Finish[]" id="{{$Finish}}" value="{{$Finish}}">
                 </fieldset>
                 @endforeach
                 <x-input-error :messages="$errors->get('Finish')" class="mt-2" />
@@ -59,7 +59,7 @@
             @foreach ($FormulationArray as $Formulation)
                 <fieldset >
                     <label for={{$Formulation}}>{{$Formulation}}</label>
-                    <input type="checkbox" name="Formulation[]" id="{{$Formulation}}">
+                    <input type="checkbox" name="Formulation[]" id="{{$Formulation}}" value="{{$Formulation}}">
                 </fieldset>
                 @endforeach
                 <x-input-error :messages="$errors->get('Formulation')" class="mt-2" />
@@ -76,7 +76,7 @@
             @foreach ($SizeArray as $Size)
                 <fieldset >
                     <label for={{$Size}}>{{$Size}}</label>
-                    <input   type="checkbox" name="Size[]" id="{{$Size}}">
+                    <input   type="checkbox" name="Size[]" id="{{$Size}}" value="{{$Size}}" >
                 </fieldset>
                 @endforeach
                 <x-input-error :messages="$errors->get('Size')" class="mt-2" />
@@ -93,7 +93,7 @@
             @foreach ($SkinArray as $Skin)
                 <fieldset >
                     <label for={{$Skin}}>{{$Skin}}</label>
-                    <input  type="checkbox" name="Skin[]" id="{{$Skin}}">
+                    <input  type="checkbox" name="Skin[]" id="{{$Skin}}" value="{{$Skin}}" >
                 </fieldset>
                 @endforeach
                 <x-input-error :messages="$errors->get('Skin')" class="mt-2" />

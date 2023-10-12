@@ -58,6 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             //Products
             Route::get('product/search', [ProductController::class, 'SearchHandle'])->name('searchProducts');
+            Route::get('product/api-show/{id}', [ProductController::class, 'apiShow'])->name('apiShowProduct');
             Route::resource('product', ProductController::class);
         });
 

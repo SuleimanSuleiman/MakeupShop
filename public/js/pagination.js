@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // open/close menu
             if (ele.classList.contains('open')) {
                 ele.children.icon.classList.add("-rotate-90");
-                ele.children.menu.classList.remove('opacity-0');
+                ele.children.menu.classList.remove('hidden');
             } else {
                 ele.children.icon.classList.remove('-rotate-90');
-                ele.children.menu.classList.add('opacity-0');
+                ele.children.menu.classList.add('hidden');
             }
         })
     })

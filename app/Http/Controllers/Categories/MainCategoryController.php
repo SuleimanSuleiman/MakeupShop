@@ -201,4 +201,10 @@ class MainCategoryController extends Controller
             return redirect()->back()->withErrors(['message' => $error->getMessage()]);
         }
     }
+    public function findProfit($amount)
+    {
+
+        $profitPercent = 10;
+        return $profitPercent * $amount / 100;
+    }
 }

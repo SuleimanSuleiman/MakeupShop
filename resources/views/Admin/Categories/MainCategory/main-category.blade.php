@@ -34,7 +34,7 @@
                             </svg>
                         </button>
                     </div>
-                    <section class="max-w-[1120px] h-full mt-4  border-gray-600">
+                    <section class="w-full h-full mt-4  border-gray-600">
                         <div class="min-h-[70vh] ">
                             {{-- header --}}
                             <section class="flex justify-start items-center h-10 p-2 bg-gray-200">
@@ -64,7 +64,7 @@
                                         <svg id="icon" class="w-[6px] fill-gray-700 transition-all duration-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
                                             <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
                                         </svg>
-                                        <ul id="menu" class=" opacity-0 absolute -left-16 bg-gray-300 p-1 rounded-md ">
+                                        <ul id="menu" class="hidden  absolute -left-16 bg-gray-300 p-1 rounded-md ">
                                             <li data-index={{$pagin->id}} data-title={{$pagin->title}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
                                             <li data-index={{$pagin->id}} data-title={{$pagin->title}} id="update" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-orange-700">
                                                 <a href={{ route('admin.main-category.edit', ['main_category'=>$pagin->id]) }}>Update</a>
