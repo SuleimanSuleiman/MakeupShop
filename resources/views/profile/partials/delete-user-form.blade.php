@@ -49,6 +49,11 @@
                 <x-danger-button class="ml-3">
                     {{ __('Delete Account') }}
                 </x-danger-button>
+                <form action={{ route('logout') }}>
+                    @csrf
+                    @method('DELETE')
+                    <input value="Logout" type="submit">
+                </form>
             </div>
         </form>
     </x-modal>

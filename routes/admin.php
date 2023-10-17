@@ -1,12 +1,19 @@
 <?php
 
+use App\Events\chat;
+use App\Events\chatEvent;
+use App\Events\NoftifyAdmins;
+use App\Events\RealTimeMessage;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Categories\MainCategoryController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotifictionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Profiles\ProfileAdminController;
 use App\Models\MainCategory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +32,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('AuthAdmin')->group(function () {
 
+        Route::view('/test', 'test');
         Route::prefix('dashboard')->group(function () {
+
 
             Route::get('/', function () {
                 $paginator = MainCategory::paginate(5);
@@ -60,6 +69,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('product/search', [ProductController::class, 'SearchHandle'])->name('searchProducts');
             Route::get('product/api-show/{id}', [ProductController::class, 'apiShow'])->name('apiShowProduct');
             Route::resource('product', ProductController::class);
+
+
+            //NOTIFICATION
+            Route::get('show-all-notification', [NotifictionController::class, 'getAllNotifcation'])->name('showAllNotification');
         });
 
 

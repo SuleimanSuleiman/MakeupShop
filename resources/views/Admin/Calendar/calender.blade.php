@@ -72,7 +72,8 @@
 <body>
     <div class="flex">
         <x-sidbare stage="Calendar" btn="false"/>
-        <div class="w-full">
+        <div class="w-[80%] p-2">
+            <x-header-dashboard :notficiations="$notficiations" />
             <div id='calendar'></div>
             <div class="px-28 flex justify-start items-center">
                 <p class="text-xs text-gray-700">Categories</p>

@@ -5,6 +5,7 @@
             {{-- setting --}}
             <section class="flex-[90%] bg-gray-50">
                 <div class="p-4">
+                    <x-header-dashboard :notficiations="$notficiations" />
                     <x-input-error :messages="$errors->get('message')" class="mt-2" />
                     <div class="border-b-2 border-gray-300 py-2 flex items-center ">
                         <small class="hover:cursor-pointer underline">

@@ -1,13 +1,8 @@
 <x-category-layout>
     <section class="w-full h-screen flex justify-start items-center">
             <x-sidbare stage="Add Category" btn="false"/>
-            <div class="flex-[90%] w-full h-full  bg-gray-100 pl-4">
-                <div class="flex justify-between items-center px-4 py-1">
-                    <a href={{route('admin.main-category.index')}} class="flex justify-center items-center rounded-xl w-[40px] h-[40px] border border-gray-500 hover:cursor-pointer">
-                        <i class="fa-solid fa-caret-left text-gray-700 text-[22px]"></i>
-                    </a>
-                    <x-translate-bottun />
-                </div>
+            <div class="flex-[90%] w-full h-full p-4  bg-gray-100 pl-4">
+                <x-header-dashboard :notficiations="$notficiations" />
                 <div class="py-12 px-4">
                     <h1 class="text-2xl text-gray-700 font-semibold my-4">Add New Main Category</h1>
                     <form action={{route('admin.main-category.store')}} method="POST" class="w-full">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Categories;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategory;
+use App\Interfaces\NotificationInterface;
 use App\Mail\CreateMainCategory;
 use App\Mail\DeleteMainCategory;
 use App\Mail\UnActiveMainCategory;
@@ -25,14 +26,22 @@ use Illuminate\Support\Str;
 
 class MainCategoryController extends Controller
 {
+    private $notificationController;
+
+    public function __construct(NotificationInterface $notificationController)
+    {
+        $this->notificationController = $notificationController;
+    }
     public function index()
     {
+        $notficiations = $this->notificationController->getNotification(7);
         $paginator = MainCategory::orderBy('created_at', 'desc')->Paginate(6);
-        return view('Admin.Categories.MainCategory.main-category', compact('paginator'));
+        return view('Admin.Categories.MainCategory.main-categories', compact(['paginator', 'notficiations']));
     }
     public function create()
     {
-        return view('Admin.Categories.MainCategory.add-main-category');
+        $notficiations = $this->notificationController->getNotification(7);
+        return view('Admin.Categories.MainCategory.add-main-category', compact('notficiations'));
     }
 
     public function store(CreateCategory $request)
@@ -42,6 +51,8 @@ class MainCategoryController extends Controller
             $categoryData = $this->saveData($request);
 
             $this->sendEmailToAllClient($categoryData);
+
+            $this->notificationController->createNotification('created', 'main-category', $categoryData->id);
 
             return redirect()->route('admin.main-category.index');
         } catch (Exception $error) {
@@ -98,6 +109,8 @@ class MainCategoryController extends Controller
 
             $main_category->save();
 
+            $this->notificationController->createNotification('updated', 'main-category', $main_category->id);
+
             return $this->show($main_category->id);
         } catch (Exception $error) {
             return redirect()->back()->withErrors(['message' => $error->getMessage()]);
@@ -121,6 +134,8 @@ class MainCategoryController extends Controller
             $category->active = !$category->active;
 
             $category->save();
+
+            $this->notificationController->createNotification('updated', 'main-category', $category->id);
 
             // if (!$category->active) {
             //     $title = $category->title;
@@ -193,6 +208,9 @@ class MainCategoryController extends Controller
             if ($deleteRow) {
                 MainCategory::findOrFail($categoryId)->delete();
                 $deleteRow->delete();
+
+                $this->notificationController->createNotification('deleted', 'main-category', null);
+
                 return redirect()->route('admin.main-category.index');
             } else {
                 return redirect()->back()->with('error', 'Not Found Category !!');

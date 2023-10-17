@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Offer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\storeOffer;
+use App\Interfaces\NotificationInterface;
 use App\Mail\CreateOfferForSUbCateogry;
 use App\Models\Category;
 use App\Models\Offer;
@@ -16,13 +17,21 @@ use Illuminate\Support\Facades\Mail;
 
 class OfferController extends Controller
 {
+    private $notificationController;
+
+    public function __construct(NotificationInterface $notificationController)
+    {
+        $this->notificationController = $notificationController;
+    }
     public function index()
     {
     }
     public function createForSubCategory()
     {
+        $notficiations = $this->notificationController->getNotification(7);
+
         $sub_categories = Category::all();
-        return view('Admin.Categories.SubCategory.add-offer-sub-category', compact('sub_categories'));
+        return view('Admin.Categories.SubCategory.add-offer-sub-category', compact(['sub_categories', 'notficiations']));
     }
 
     public function store(storeOffer $request)
@@ -98,7 +107,8 @@ class OfferController extends Controller
     public function showCalendar()
     {
         $allOffer = Offer::all();
-        return view('Admin.Calendar.calender', compact('allOffer'));
+        $notficiations = $this->notificationController->getNotification(7);
+        return view('Admin.Calendar.calender', compact(['allOffer', 'notficiations']));
     }
 
 

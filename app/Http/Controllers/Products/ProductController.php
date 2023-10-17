@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Events\NoftifyAdmins;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotifictionController;
 use App\Http\Requests\CreateProduct;
 use App\Http\Requests\UpdateProduct;
+use App\Interfaces\NotificationInterface;
 use App\Models\Category;
 use App\Models\MainCategory;
 use App\Models\Product;
@@ -12,20 +15,33 @@ use App\Models\Upload;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+
+    private $notificationController;
+
+    public function __construct(NotificationInterface $notificationController)
+    {
+        $this->notificationController = $notificationController;
+    }
+
     public function index(Request $request)
     {
         try {
+
             $perPage = $request->input('perPage', 5);
 
             $categories = Category::all();
             $main_categories = MainCategory::all();
 
+
+            $notficiations = $this->notificationController->getNotification(7);
+
             $pagination = Product::with(['categoryName.BelongTOMainCategory', 'imgs'])->Paginate($perPage);
 
-            return view('Admin.Products.show-products', compact('categories', 'main_categories', 'pagination'));
+            return view('Admin.Products.show-products', compact('categories', 'main_categories', 'pagination', 'notficiations'));
         } catch (Exception $error) {
             return redirect()->back()->withErrors(['error' => $error->getMessage()]);
         }
@@ -50,6 +66,10 @@ class ProductController extends Controller
             $newProduct = $this->createNewProduct($request);
 
             $this->uploadFiles($request, $newProduct);
+
+
+            $this->notificationController->createNotification('created', 'product', $newProduct->id);
+
 
             return redirect()->route('admin.product.index');
         } catch (Exception $error) {
@@ -115,9 +135,11 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function show()
+    {
+        return 'Fuck You -_-';
+    }
+
     public function edit(string $id)
     {
         try {
@@ -160,8 +182,9 @@ class ProductController extends Controller
                 'Size' => implode(',', $request->get('Size')),
             ]);
 
-
             $product->save();
+
+            $this->notificationController->createNotification('updated', 'product', $product->id);
 
             return redirect()->route('admin.product.index')->with('success', 'update the product successfully');
         } catch (ModelNotFoundException $e) {
@@ -170,6 +193,7 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['error' => $error->getMessage()]);
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -177,7 +201,10 @@ class ProductController extends Controller
     {
         try {
             $product = Product::findOrFail($id);
+
             $product->delete();
+
+            $this->notificationController->createNotification('deleted', 'product', null);
 
             return redirect()->route('admin.product.index')->with('success', 'the product deleted successfully');
         } catch (ModelNotFoundException $e) {

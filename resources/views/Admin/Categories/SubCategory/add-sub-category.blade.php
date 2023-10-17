@@ -1,12 +1,9 @@
 <x-category-layout>
         <section class="w-full h-screen flex justify-start items-center">
             <x-sidbare stage="Add Sub Category" btn="false"/>
-            <div class="flex-[90%] w-full h-full px-4 bg-gray-100 ">
+            <div class="flex-[90%] w-full h-full p-4 bg-gray-100 ">
+                <x-header-dashboard :notficiations="$notficiations" />
                 <div class="flex justify-between items-center px-4 py-1">
-                    <a href={{route('admin.sub-category.index')}} class="flex justify-center items-center rounded-xl w-[40px] h-[40px] border border-gray-500 hover:cursor-pointer">
-                        <i class="fa-solid fa-caret-left text-gray-700 text-[22px]"></i>
-                    </a>
-                    <x-translate-bottun />
                 </div>
                     <x-input-error :messages="$errors->get('message')" class="m-2" />
                 <div class="py-12 px-4">

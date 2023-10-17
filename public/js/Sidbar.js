@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
                 itElement.nextElementSibling.classList.add('hidden')
             }
         });
-    })
+    });
 })
+
+
 

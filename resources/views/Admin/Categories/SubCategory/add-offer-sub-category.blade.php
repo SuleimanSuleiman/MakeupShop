@@ -1,10 +1,8 @@
 <x-category-layout>
         <section class="w-full h-screen flex justify-start items-center">
             <x-sidbare stage="Add Sub Offer" btn="false"/>
-            <div class="flex-[90%] w-full h-full px-4 bg-gray-100 ">
-                <div class="flex justify-end items-center px-4 py-1">
-                    <x-translate-bottun />
-                </div>
+            <div class="flex-[90%] w-full h-full p-4 bg-gray-100 ">
+                 <x-header-dashboard :notficiations="$notficiations" />
                     <x-input-error :messages="$errors->get('message')" class="m-2" />
                 <div class="px-4">
                     <h1 class="text-2xl text-gray-700 font-semibold mb-8">Add New Offer For Sub Category</h1>

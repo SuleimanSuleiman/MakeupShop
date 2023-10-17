@@ -3,9 +3,9 @@
         {{-- sidbare --}}
         <x-sidbare stage="Show  Products" btn="false"/>
         {{-- setting --}}
-        <section class="flex-[90%] px-8 py-3">
+        <section class="m-2 w-full sm:w-[500px] md:w-[750px] lg:w-[860px]  xl:w-[1100px] mx-auto h-auto px-5 py-3  ">
             {{-- header --}}
-            <x-header-dashboard />
+            <x-header-dashboard :notficiations="$notficiations" />
             <div class="p-4 w-full  shadow-md stroke-gray-600 flex items-center justify-between flex-wrap bg-white rounded-lg">
                 <div class="px-4  flex-auto flex justify-between relative after:bg-gray-200 after:w-0.5 after:h-full after:absolute after:top-0 after:right-0">
                     <div class="">
@@ -99,7 +99,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="p-4 w-full border-b border-gray-300 flex justify-between items-center">
+                <div class="p-4 w-full border-b border-gray-300 flex justify-between items-center md:flex-nowrap flex-wrap md:gap-5 gap-8">
                     <div class="flex-[20%] flex gap-x-1">
                         <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" placeholder="Name ..." name="Name" />
                         <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" placeholder="desc ..." name="desc" />
@@ -121,17 +121,17 @@
                 <table class="w-full text-sm text-left  text-gray-400">
                     {{-- header --}}
                     <thead class="text-xs  text-gray-700 uppercase ">
-                        <tr scope="col" class="px-6 py-3">
-                            <th scope="col" class="px-6 py-3">
+                        <tr scope="col" class="px-4 py-3">
+                            <th scope="col" class="px-4 py-3">
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-4 py-3">
                                 <input  class="checkbox hover:cursor-pointer" type="checkbox">
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-4 py-3">
                                 Product name
                             </th>
                             {{-- categort --}}
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-4 py-3">
                                 <div class="flex items-center">
                                     Category
                                     <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -140,7 +140,7 @@
                                 </div>
                             </th>
                             {{-- main cateogry --}}
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-4 py-3">
                                 <div class="flex items-center">
                                     Main Category
                                     <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@
                                 </div>
                             </th>
                             {{-- proice --}}
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-4 py-3">
                                 <div class="flex items-center">
                                     Price
                                     <a href="#"><svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -173,40 +173,42 @@
                         </tr>
                     </thead>
                     {{-- body --}}
-                    <tbody class="">
+                    <tbody class="overflow-x-auto">
                             @foreach($pagination as $pagin)
                                 <tr class="bg-white border-y border-gray-300 overflow-x-auto ">
-                                    <td data-index="{{$pagin->id}}" id="ProductDataShow{{$pagin->id}}" class="px-6 py-4 hover:cursor-pointer">
-                                        <svg class="fill-blue-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
-                                    </td>
-                                    <td class="px-6 py-4"><input  class="checkbox hover:cursor-pointer" type="checkbox"></td>
-                                    <td class="px-6 py-4 flex items-center">
-                                        <div class="flex-[10%] mr-2">
-                                            <img src="/{{$pagin->imgs[0]->path}}" class="w-10 h-10 object-fill rounded-md" alt="">
+                                    <td data-index="{{$pagin->id}}" id="ProductDataShow{{$pagin->id}}" class="hover:cursor-pointer z-40 sticky top-0 left-0 bg-white ">
+                                        <div class="px-6 py-4  w-16 flex justify-center items-center h-16 " style="box-shadow:20px 1px 10px 0px white">
+                                            <svg class="fill-blue-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
                                         </div>
-                                        <div class="flex-[90%]">
+                                    </td>
+                                    <td class="px-4 py-4"><input  class="checkbox hover:cursor-pointer" type="checkbox"></td>
+                                    <td class="px-4 py-4 flex items-center">
+                                        <div class="w-10 h-10 mr-2">
+                                            <img src="/{{$pagin->imgs[0]->path}}" class="w-full h-full object-cover rounded-md" alt="">
+                                        </div>
+                                        <div class="">
                                             <p class="text-sm text-gray-600 font-semibold">{{$pagin->name}}</p>
                                             <p class="text-xs text-gray-600 opacity-75 font-semibold">{{substr($pagin->desc,0,50)}} ...</p>
                                         </div>
                                     </td>
                                     {{-- category  --}}
-                                    <td class="px-6 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->active?'after:bg-green-800':'after:bg-red-600'}}">
+                                    <td class="px-4 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->active?'after:bg-green-800':'after:bg-red-600'}}">
                                         <a class="underline" href={{route('admin.sub-category.show',$pagin->categoryName->id)}}>{{$pagin->categoryName->title}}</a>
                                     </td>
                                     {{-- main scategory --}}
-                                    <td class="px-6 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->BelongTOMainCategory->active?'after:bg-green-800':'after:bg-red-600'}}"">
+                                    <td class="px-4 py-4 relative  after:w-3 after:h-3 after:rounded-full after:absolute after:top-1/2 after:-translate-y-[50%] after:right-6 {{$pagin->categoryName->BelongTOMainCategory->active?'after:bg-green-800':'after:bg-red-600'}}"">
                                         <a class="underline" href={{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}>{{$pagin->categoryName->BelongTOMainCategory->title}}</a>
                                     </td>
                                     {{-- price --}}
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-4">
                                         {{$pagin->price}}
                                     </td>
                                     {{-- margiet --}}
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-4">
                                         {{$pagin->market}}
                                     </td>
                                     {{-- actiob --}}
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-4 py-4 text-right">
                                             <div  data-index={{$pagin->id}} id="action" class=" flex-[5%]  font-[100] text-[28px] flex justify-center items-center hover:cursor-pointer">
                                                 <ul id="menu-product" class=" bg-gray-200 p-1 rounded-md ">
                                                     <li data-index={{$pagin->id}} data-name={{$pagin->name}}  id="remove" class="text-[14px] font-semibold hover:scale-105 transition-none duration-700 text-red-600 ">Remove</li>
@@ -238,7 +240,7 @@
                                         <div id="ProductContainer{{$pagin->id}}" class="bg-gray-100 w-[50%] shadow-lg shadow-gray-400">
                                             {{-- name --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <p class="flex-[40%">product:</p>
+                                                    <p class="flex-[40%]">product:</p>
                                                     <div class="flex-[60%] flex">
                                                         <div class="mr-2">
                                                             <img id="product-img{{$pagin->id}}" src="" class="w-10 h-10 object-fill rounded-md" alt="">
@@ -251,57 +253,57 @@
                                             </div>
                                             {{-- main category --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Main Cateogry: </P>
+                                                    <P class="flex-[40%]">Main Cateogry: </P>
                                                     <a id="main-category-link{{$pagin->id}}" class="flex-[60%] underline" href=""></a>
                                             </div>
                                             {{-- sub category --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Sub Category:</P>
+                                                    <P class="flex-[40%]">Sub Category:</P>
                                                     <a id="sub-category-link{{$pagin->id}}" class="flex-[60%] underline" href=""></a>
                                             </div>
                                             {{-- PRICE --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Price:</p>
+                                                    <P class="flex-[40%]">Price:</p>
                                                     <p id="product-price{{$pagin->id}}" class="flex-[60%]"></p>
                                             </div>
                                             {{-- MARKET --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Market:</p>
+                                                    <P class="flex-[40%]">Market:</p>
                                                     <p id="product-market{{$pagin->id}}" class="flex-[60%]"></p>
                                             </div>
                                             {{-- Color --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Colors:</p>
+                                                    <P class="flex-[40%]">Colors:</p>
                                                     <div id="product-colors{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
                                             {{-- Concerns --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Concerns:</p>
+                                                    <P class="flex-[40%]">Concerns:</p>
                                                     <div id="product-concerns{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
                                             {{-- Finish --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Finish:</p>
+                                                    <P class="flex-[40%]">Finish:</p>
                                                     <div id="product-finish{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
                                             {{-- Formulation --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Formulation:</p>
+                                                    <P class="flex-[40%]">Formulation:</p>
                                                     <div id="product-formulation{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
                                             {{-- Skin --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Skin:</p>
+                                                    <P class="flex-[40%]">Skin:</p>
                                                     <div id="product-skin{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
                                             {{-- Size --}}
                                             <div class="flex gap-x-7 items-center border-b border-gray-300 p-4">
-                                                    <P class="flex-[40%">Size:</p>
+                                                    <P class="flex-[40%]">Size:</p>
                                                     <div id="product-size{{$pagin->id}}" class="flex-[60%] flex gap-x-2">
                                                     </div>
                                             </div>
@@ -331,7 +333,6 @@
                                             // تعبئة البيانات المنتج هنا
                                             document.getElementById("product-img{{$pagin->id}}").src = "/{{$pagin->imgs[0]->path}}";
                                             document.getElementById("product-name{{$pagin->id}}").textContent = `{{$pagin->name}}`;
-                                            console.log( document.getElementById("product-name{{$pagin->id}}"));
                                             document.getElementById("product-desc{{$pagin->id}}").innerHTML = `{{$pagin->desc}}`;
                                             document.getElementById("main-category-link{{$pagin->id}}").href = "{{route('admin.main-category.show',$pagin->categoryName->BelongTOMainCategory->id)}}";
                                             document.getElementById("main-category-link{{$pagin->id}}").textContent = "{{$pagin->categoryName->BelongTOMainCategory->title}}";
@@ -406,13 +407,13 @@
                             @endforeach
                     </tbody>
                 </table>
-                    <div class="px-6 py-3 mb-4 flex justify-between items-center">
+                <div class="px-6 py-3 mb-4 flex justify-between items-center">
                         <form method="get" class="" action="{{ route('admin.product.index') }}">
                             <input class="py-1 px-2 flex-auto border-gray-200 rounded-md focus:outline-none" type="number" name="perPage" id="perPage" value="{{ request('perPage', $pagination->perPage()) }}">
                             <button class="bg-blue-500 p-1 rounded-md text-white" type="submit">edit</button>
                         </form>
                         {{ $pagination->onEachSide(2)->links() }}
-                    </div>
+                </div>
             </div>
            </div>
         </section>

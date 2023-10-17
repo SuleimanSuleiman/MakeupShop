@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Categories;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategory;
+use App\Interfaces\NotificationInterface;
 use App\Mail\CreateMainCategory;
 use App\Mail\CreateSubCategory;
 use App\Mail\DeleteMainCategory;
@@ -13,6 +14,7 @@ use App\Models\Category;
 use App\Models\DeleteCategory;
 use App\Models\DeleteSubCategory as ModelsDeleteSubCategory;
 use App\Models\MainCategory;
+use App\Models\Notifiction;
 use App\Models\User;
 use Dotenv\Validator;
 use Error;
@@ -28,20 +30,30 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    private $notificationController;
+
+    public function __construct(NotificationInterface $notificationController)
+    {
+        $this->notificationController = $notificationController;
+    }
+
     public function index()
     {
+        $notficiations = $this->notificationController->getNotification(7);
+
         $paginator = Category::with('BelongTOMainCategory')
             ->whereHas('BelongTOMainCategory', function ($query) {
                 $query->where('deleted_at', null);
             })
             ->orderBy('created_at', 'desc')
             ->Paginate(10);
-        return view('Admin.Categories.SubCategory.sub-category', compact('paginator'));
+        return view('Admin.Categories.SubCategory.sub-categories', compact(['paginator', 'notficiations']));
     }
     public function create()
     {
+        $notficiations = $this->notificationController->getNotification(7);
         $main_categories = MainCategory::all();
-        return view('Admin.Categories.SubCategory.add-sub-category', compact('main_categories'));
+        return view('Admin.Categories.SubCategory.add-sub-category', compact(['main_categories', 'notficiations']));
     }
 
     public function store(CreateCategory $request)
@@ -51,6 +63,8 @@ class CategoryController extends Controller
             $categoryData = $this->saveData($request);
 
             $this->sendEmailToAllClient($categoryData);
+
+            $this->notificationController->createNotification('created', 'sub-category', $categoryData->id);
 
             return $this->index();
         } catch (Exception $error) {
@@ -109,6 +123,8 @@ class CategoryController extends Controller
 
             $category->save();
 
+            $this->notificationController->createNotification('updated', 'sub-category', $category->id);
+
             return $this->show($category->id);
         } catch (Exception $error) {
             return redirect()->back()->withErrors(['message' => $error->getMessage()]);
@@ -133,6 +149,7 @@ class CategoryController extends Controller
 
             $category->save();
 
+            $this->notificationController->createNotification('updated', 'sub-category', $category->id);
             // if (!$category->active) {
             //     $title = $category->title;
             //     Mail::to(Auth::guard('admin')->user()->email)->send(new UnActiveMainCategory($title));
@@ -204,7 +221,10 @@ class CategoryController extends Controller
 
             if ($deleteRow) {
                 Category::findOrFail($categoryId)->delete();
+
                 $deleteRow->delete();
+
+                $this->notificationController->createNotification('deleted', 'sub-category', null);
                 return redirect()->route('admin.sub-category.index');
             } else {
                 return redirect()->back()->with('error', 'Not Found Category !!');
